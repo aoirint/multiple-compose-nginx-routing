@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  article-api-nginx:
+    build: ${ARTICLE_APP_HOST_ROOT:-.}/nginx
+    restart: always
+    volumes:
+      - ${ARTICLE_APP_HOST_ROOT:-.}/nginx/conf.d/:/etc/nginx/conf.d
+      - ${ARTICLE_APP_HOST_ROOT:-.}/article-api-app/static/:/static
+    depends_on:
+      - 'article-api-app'
+
+  article-api-app:
+    build: ${ARTICLE_APP_HOST_ROOT:-.}/article-api-app/
+    command: uvicorn --workers 4 --host 0.0.0.0 --port 8000 main:app
+    restart: always
+    volumes:
+      - ${ARTICLE_APP_HOST_ROOT:-.}/article-api-app/:/code
+    env_file:
+      - ${ARTICLE_APP_HOST_ROOT:-.}/.env.article-api-app

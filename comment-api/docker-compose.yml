@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  comment-api-nginx:
+    build: ${COMMENT_APP_HOST_ROOT:-.}/nginx
+    restart: always
+    volumes:
+      - ${COMMENT_APP_HOST_ROOT:-.}/nginx/conf.d/:/etc/nginx/conf.d
+      - ${COMMENT_APP_HOST_ROOT:-.}/comment-api-app/static/:/static
+    depends_on:
+      - 'comment-api-app'
+
+  comment-api-app:
+    build: ${COMMENT_APP_HOST_ROOT:-.}/comment-api-app/
+    command: uvicorn --workers 4 --host 0.0.0.0 --port 8000 main:app
+    restart: always
+    volumes:
+      - ${COMMENT_APP_HOST_ROOT:-.}/comment-api-app/:/code
+    env_file:
+      - ${COMMENT_APP_HOST_ROOT:-.}/.env.comment-api-app
