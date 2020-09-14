@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   comment-api-nginx:
-    build: ${COMMENT_APP_HOST_ROOT:-.}/nginx
+    image: nginx
     restart: always
     volumes:
       - ${COMMENT_APP_HOST_ROOT:-.}/nginx/conf.d/:/etc/nginx/conf.d

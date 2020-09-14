@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   article-api-nginx:
-    build: ${ARTICLE_APP_HOST_ROOT:-.}/nginx
+    image: nginx
     restart: always
     volumes:
       - ${ARTICLE_APP_HOST_ROOT:-.}/nginx/conf.d/:/etc/nginx/conf.d
